@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}Projects{% endblock %}</h1>
+<h2>{% block title %}Projects{% endblock %}</h2>
 {% endblock %}
 
 {% block content %}
-<table id="project_table" class="table table-striped">
+<table id="project_table" class="stripe hover row-border order-column column-border">
     <thead>
       <tr>
         <th>ID</th>
@@ -32,10 +32,10 @@
     $(document).ready(function () {
       $('#project_table').DataTable({
         columns: [
-          null,
-          null,
-          {orderable: false},
-          {searchable: false}
+            {className: 'dt-right'},
+            {className: 'dt-left'},
+            {orderable: false, className: 'dt-left'},
+            {searchable: false, className: 'dt-right'}
         ],
       });
     });
