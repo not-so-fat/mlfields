@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Projects{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<table id="project_table" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Note</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in projects %}
+        <tr>
+          <td>{{ project.project_id }}</td>
+          <td>{{ project.name }}</td>
+          <td>{{ project.note }}</td>
+          <td>{{ project.created }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#project_table').DataTable({
+        columns: [
+          null,
+          null,
+          {orderable: false},
+          {searchable: false}
+        ],
+      });
+    });
+  </script>
+{% endblock %}

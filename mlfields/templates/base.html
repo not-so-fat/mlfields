@@ -1,0 +1,29 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - MLFields</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
+</head>
+<nav>
+    <h1>MLFields</h1>
+    <ul>
+        {% if g.project %}
+            <li><span>{{ g.project['name'] }}</span>
+            <li><span>{{ g.project['note'] }}</span>
+            <li><a href="{{ url_for('projects.list') }}">List of Projects</a>
+        {% else %}
+            <li><a href="{{ url_for('projects.create') }}">Create a New Project</a>
+        {% endif %}
+    </ul>
+</nav>
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.js"></script>
+    {% block scripts %}{% endblock %}
+</section>
