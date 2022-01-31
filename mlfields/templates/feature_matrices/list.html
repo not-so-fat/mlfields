@@ -1,0 +1,44 @@
+{% extends 'projects/project_base.html' %}
+
+{% block nav2 %}
+    <ul>
+        <li> Feature matrices </li>
+        <li> <a href="{{ url_for('feature_definitions.list', project_id=project.project_id) }}"> Feature definitions </a></li>
+    </ul>
+{% endblock %}
+
+{% block content2 %}
+<h2> Generated feature matrices </h2>
+<table id="feature_matrices" class="stripe hover row-border order-column cell-border">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Created</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fm in fms %}
+      <tr>
+        <td>{{ fm.fm_id }}</td>
+        <td>{{ fm.created }}</td>
+        <td>{{ fm.note }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts2 %}
+  <script>
+    $(document).ready(function () {
+      $('#feature_matrices').DataTable({
+        columns: [
+            {className: 'dt-right'},
+            {searchable: false, className: 'dt-right'},
+            {orderable: false, className: 'dt-left'}
+        ],
+      });
+    });
+  </script>
+{% endblock %}

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<table id="project_table" class="stripe hover row-border order-column column-border">
+  <table id="project_table" class="stripe hover row-border order-column cell-border">
     <thead>
       <tr>
         <th>ID</th>
@@ -15,9 +15,9 @@
       </tr>
     </thead>
     <tbody>
-      {% for project in projects %}
+      {% for project, url in contexts %}
         <tr>
-          <td>{{ project.project_id }}</td>
+          <td><a href="{{ url }}"> {{ project.project_id }} </a></td>
           <td>{{ project.name }}</td>
           <td>{{ project.note }}</td>
           <td>{{ project.created }}</td>
@@ -25,6 +25,7 @@
       {% endfor %}
     </tbody>
   </table>
+  <a href="{{ url_for('projects.create') }}">Create a New Project</a>
 {% endblock %}
 
 {% block scripts %}

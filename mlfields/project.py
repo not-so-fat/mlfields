@@ -1,17 +1,11 @@
-import functools
-
 from flask import (
     Blueprint,
     flash,
-    g,
     redirect,
     render_template,
     request,
-    session,
-    url_for,
-    jsonify
+    url_for
 )
-import pandas
 
 from mlfields.data_models import (
     db,
@@ -46,4 +40,5 @@ def create():
 @bp.route('/', methods=('GET',))
 def list():
     projects = Projects.query
-    return render_template('projects/list.html', projects=projects)
+    urls = [url_for("feature_matrices.list", project_id=p.project_id) for p in projects]
+    return render_template('projects/list.html', contexts=zip(projects, urls))

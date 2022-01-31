@@ -7,12 +7,12 @@
     --sakura: #E4A0E5;
 }
 html { font-family: sans-serif; color: black; background: var(--darkgreen2); padding: 1rem; }
-body { max-width: 960px; margin: 0 auto; background: var(--lightgray); }
+body { margin: 0 auto; background: var(--lightgray); }
 h1 { font-family: sans-serif; color: orange; margin: 1rem 0; }
 h2 { font-family: sans-serif; color: var(--darkgreen); margin: 1rem 0; }
 a { color: var(--sakura); }
 hr { border: none; border-top: 1px solid lightgray; }
-nav { background: var(--darkgray); display: flex; align-items: center; padding: 0 0.5rem; }
+nav { background: var(--darkgray); color: var(--macha); display: flex; align-items: center; padding: 0 0.5rem; }
 nav h1 { flex: auto; margin: 0; }
 nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
 nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
