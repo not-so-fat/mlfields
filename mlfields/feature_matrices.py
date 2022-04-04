@@ -16,4 +16,5 @@ bp = Blueprint('feature_matrices', __name__)
 def list(project_id):
     project = Projects.query.filter_by(project_id=project_id).first()
     fms = FeatureMatrices.query.filter_by(project_id=project_id)
-    return render_template('feature_matrices/list.html', project=project, fms=fms)
+    urls = [url_for("feature_evaluations.list", project_id=project.project_id, fm_id=fm.fm_id) for fm in fms]
+    return render_template('feature_matrices/list.html', project=project, contexts=zip(fms, urls))

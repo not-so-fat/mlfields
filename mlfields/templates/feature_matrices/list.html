@@ -2,7 +2,7 @@
 
 {% block nav2 %}
     <ul>
-        <li> Feature matrices </li>
+        <li><b> Feature matrices</b> </li>
         <li> <a href="{{ url_for('feature_definitions.list', project_id=project.project_id) }}"> Feature definitions </a></li>
     </ul>
 {% endblock %}
@@ -13,14 +13,16 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>Name</th>
       <th>Created</th>
       <th>Note</th>
     </tr>
   </thead>
   <tbody>
-    {% for fm in fms %}
+    {% for fm, url in contexts %}
       <tr>
-        <td>{{ fm.fm_id }}</td>
+          <td><a href="{{ url }}"> {{ fm.fm_id }} </a></td>
+        <td>{{ fm.name }}</td>
         <td>{{ fm.created }}</td>
         <td>{{ fm.note }}</td>
       </tr>
@@ -34,6 +36,7 @@
     $(document).ready(function () {
       $('#feature_matrices').DataTable({
         columns: [
+            {className: 'dt-right'},
             {className: 'dt-right'},
             {searchable: false, className: 'dt-right'},
             {orderable: false, className: 'dt-left'}

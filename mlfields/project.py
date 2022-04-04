@@ -22,18 +22,13 @@ def create():
         name = request.form['name']
         note = request.form['note']
         error = None
-
         if not name:
             error = 'Name is required.'
-
         if error is not None:
             flash(error)
         else:
-            new_project = Projects(name=name, note=note)
-            db.session.add(new_project)
-            db.session.commit()
+            res = requests.post(url_for("projects.list"), json={"name": name, "note": note})
             return redirect(url_for("projects.list"))
-
     return render_template('projects/create.html')
 
 

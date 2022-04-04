@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_restful import Api
 
 
 def create_app(test_config=None):
@@ -34,9 +35,22 @@ def create_app(test_config=None):
     app.register_blueprint(project.bp)
 
     from . import feature_matrices
-    app.register_blueprint(feature_matrices.bp, url_prefix='/projects/<int:project_id>/fms')
+    app.register_blueprint(feature_matrices.bp, url_prefix='/projects/<int:project_id>/fms/')
 
     from . import feature_definitions
-    app.register_blueprint(feature_definitions.bp, url_prefix='/projects/<int:project_id>/fds')
+    app.register_blueprint(feature_definitions.bp, url_prefix='/projects/<int:project_id>/fds/')
+
+    from . import feature_evaluations
+    app.register_blueprint(feature_evaluations.bp, url_prefix='/projects/<int:project_id>/fms/<int:fm_id>/')
+
+    from .apis import (
+        create_project,
+        fds,
+        fms
+    )
+    api = Api(app)
+    api.add_resource(create_project.CreateProject, '/api/projects/')
+    api.add_resource(fds.FDs, '/api/projects/<int:project_id>/fds/')
+    api.add_resource(fms.FMs, '/api/projects/<int:project_id>/fms/')
 
     return app
