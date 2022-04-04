@@ -43,14 +43,21 @@ def create_app(test_config=None):
     from . import feature_evaluations
     app.register_blueprint(feature_evaluations.bp, url_prefix='/projects/<int:project_id>/fms/<int:fm_id>/')
 
+    from . import feature_evaluations_for_each_feature
+    app.register_blueprint(feature_evaluations_for_each_feature.bp, url_prefix='/projects/<int:project_id>/fds/<int:feature_id>/')
+
     from .apis import (
-        create_project,
+        pjs,
         fds,
-        fms
+        fms,
+        metrics,
+        fes
     )
     api = Api(app)
-    api.add_resource(create_project.CreateProject, '/api/projects/')
+    api.add_resource(pjs.PJs, '/api/projects/')
     api.add_resource(fds.FDs, '/api/projects/<int:project_id>/fds/')
     api.add_resource(fms.FMs, '/api/projects/<int:project_id>/fms/')
+    api.add_resource(metrics.Metrics, '/api/projects/<int:project_id>/metrics/')
+    api.add_resource(fes.FEs, '/api/projects/<int:project_id>/fms/<int:fm_id>/')
 
     return app

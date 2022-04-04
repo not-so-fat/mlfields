@@ -24,3 +24,14 @@ class FDs(Resource):
         db.session.add(new_fd)
         db.session.commit()
         return {"feature_id": new_fd.feature_id}, 201
+
+    def get(self, project_id):
+        fds = FeatureDefinitions.query.filter_by(project_id=project_id)
+        return [
+            dict(
+                feature_id=fd.feature_id,
+                name=fd.name,
+                note=fd.note
+            )
+            for fd in fds
+        ]

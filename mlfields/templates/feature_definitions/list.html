@@ -1,12 +1,9 @@
 {% extends 'projects/project_base.html' %}
 
+{% block title %} Feature definition list {% endblock %}
+
 {% block nav2 %}
-<div class="tab">
-    <ul>
-        <li><a href="{{ url_for('feature_matrices.list', project_id=project.project_id) }}"> Feature matrices </a></li>
-        <li><b>Feature definitions</b></li>
-    </ul>
-</div>
+<a href="{{ url_for('feature_matrices.list', project_id=project.project_id) }}"> Back to feature matrix list </a>
 {% endblock %}
 
 
