@@ -3,8 +3,6 @@ from datetime import datetime
 import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 
-from mlfields import create_app
-
 
 db = SQLAlchemy()
 
