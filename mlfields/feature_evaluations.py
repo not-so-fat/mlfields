@@ -25,7 +25,7 @@ def list(project_id, fm_id):
     fds = FeatureDefinitions.query.filter_by(project_id=project_id)
     metrics = EvaluationMetrics.query.filter_by(project_id=project_id)
     df = pandas.read_sql(fes.statement, fes.session.bind)
-    metric_name_df = pandas.read_sql(metrics.statement, metrics.session.bind)[["metric_id", "metric_name"]]
+    metric_name_df = pandas.read_sql(metrics.statement, metrics.session.bind)[["metric_id", "metric_name"]].sort_values(by="metric_id")
     fds_df = pandas.read_sql(fds.statement, fds.session.bind)[["feature_id", "name"]]
     eval_df = df.merge(metric_name_df, on="metric_id", how="left")
     eval_df = eval_df.pivot(index=["feature_id"], columns="metric_name", values="value").reset_index()

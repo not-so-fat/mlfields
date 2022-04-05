@@ -10,6 +10,7 @@ from flask_restful import (
 
 parser = reqparse.RequestParser()
 parser.add_argument('name')
+parser.add_argument('script')
 
 
 class Metrics(Resource):
@@ -17,7 +18,8 @@ class Metrics(Resource):
         args = parser.parse_args()
         new_metric = EvaluationMetrics(
             project_id=project_id,
-            metric_name=args["name"]
+            metric_name=args["name"],
+            script=args["script"]
         )
         db.session.add(new_metric)
         db.session.commit()
@@ -27,8 +29,9 @@ class Metrics(Resource):
         metrics = EvaluationMetrics.query.filter_by(project_id=project_id)
         return [
             dict(
-                metric.metric_id,
-                metric.metric_name
+                metric_id = metric.metric_id,
+                name = metric.metric_name,
+                script = metric.script
             )
             for metric in metrics
         ]

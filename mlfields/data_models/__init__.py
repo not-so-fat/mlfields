@@ -54,4 +54,5 @@ class EvaluationMetrics(db.Model):
     metric_id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey("projects.project_id"), nullable=False)
     metric_name = db.Column(db.String, nullable=False)
+    script = db.Column(db.String)
     __table_args__ = (db.UniqueConstraint("project_id", "metric_name", name="_project_id_metric_name_uc"),)

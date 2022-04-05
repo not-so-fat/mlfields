@@ -1,4 +1,5 @@
 import os
+from os import environ
 
 import click
 from flask import (
@@ -11,15 +12,13 @@ from flask_restful import Api
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    db_path = "{}/mlfields.db".format(app.instance_path)
+    db_uri = environ.get("MLFIELDS_SQLALCHEMY_DATABASE_URI") or f'sqlite:///{app.instance_path}/mlfields.db'
     app.config.from_mapping(
         SECRET_KEY='dev',
-        SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(db_path)
+        SQLALCHEMY_DATABASE_URI = db_uri
     )
 
-    if test_config is None:
-        app.config.from_pyfile('config.py', silent=True)
-    else:
+    if test_config:
         app.config.from_mapping(test_config)
 
     try:
@@ -43,6 +42,9 @@ def create_app(test_config=None):
 
     from . import feature_definitions
     app.register_blueprint(feature_definitions.bp, url_prefix='/projects/<int:project_id>/fds/')
+
+    from . import evaluation_metrics
+    app.register_blueprint(evaluation_metrics.bp, url_prefix='/projects/<int:project_id>/metrics/')
 
     from . import feature_evaluations
     app.register_blueprint(feature_evaluations.bp, url_prefix='/projects/<int:project_id>/fms/<int:fm_id>/')
