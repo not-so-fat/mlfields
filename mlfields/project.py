@@ -27,7 +27,9 @@ def create():
         if error is not None:
             flash(error)
         else:
-            res = requests.post(url_for("projects.list"), json={"name": name, "note": note})
+            new_project = Projects(name=name, note=note)
+            db.session.add(new_project)
+            db.session.commit()
             return redirect(url_for("projects.list"))
     return render_template('projects/create.html')
 
