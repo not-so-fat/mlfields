@@ -9,10 +9,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mlfields",
-    version="0.0.0",
+    version="0.0.2",
     author="@not-so-fat",
     author_email="conjurer.not.so.fat@gmail.com",
-    description="T.B.A.",
+    description="UI system to manage ML input",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/not-so-fat/mlfields",
@@ -24,5 +24,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    include_package_data=True
 )
 

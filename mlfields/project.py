@@ -13,10 +13,10 @@ from mlfields.data_models import (
 )
 
 
-bp = Blueprint('projects', __name__, url_prefix='/projects')
+bp = Blueprint('projects', __name__)
 
 
-@bp.route('/create', methods=('GET', 'POST'))
+@bp.route('/projects/create/', methods=('GET', 'POST'))
 def create():
     if request.method == 'POST':
         name = request.form['name']
@@ -32,8 +32,13 @@ def create():
     return render_template('projects/create.html')
 
 
-@bp.route('/', methods=('GET',))
+@bp.route('/projects/', methods=('GET',))
 def list():
     projects = Projects.query
     urls = [url_for("feature_matrices.list", project_id=p.project_id) for p in projects]
     return render_template('projects/list.html', contexts=zip(projects, urls))
+
+
+@bp.route('/', methods=('GET',))
+def index():
+    return redirect(url_for('projects.list'))

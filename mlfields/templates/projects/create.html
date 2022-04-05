@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 
+{% block title %} Project creation {% endblock %}
+
 {% block nav %}
-    <ul>
-        <li><a href="{{ url_for('projects.list') }}">List of Projects</a>
-    </ul>
 {% endblock %}
 
 {% block header %}
-    <h2>{% block title %}Create a New Project{% endblock %}</h2>
+    <h2>Create a New Project</h2>
 {% endblock %}
 
 {% block content %}
