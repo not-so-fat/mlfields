@@ -1,6 +1,11 @@
 import os
 
-from flask import Flask
+import click
+from flask import (
+    Flask,
+    current_app
+)
+from flask.cli import with_appcontext
 from flask_restful import Api
 
 
@@ -28,8 +33,7 @@ def create_app(test_config=None):
 
     from .data_models import db
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
+    add_init_db_command(app)
 
     from . import project
     app.register_blueprint(project.bp)
@@ -61,3 +65,21 @@ def create_app(test_config=None):
     api.add_resource(fes.FEs, '/api/projects/<int:project_id>/fms/<int:fm_id>/')
 
     return app
+
+
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    init_db()
+    click.echo('Initialized the database.')
+
+
+def add_init_db_command(app):
+    app.cli.add_command(init_db_command)
+
+
+def init_db():
+    from .data_models import db
+    db = data_models.db
+    with current_app.app_context():
+        db.create_all()
