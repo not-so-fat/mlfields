@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mlfields",
-    version="0.0.6",
+    version="0.0.9",
     author="@not-so-fat",
     author_email="conjurer.not.so.fat@gmail.com",
     description="UI system to manage ML input",

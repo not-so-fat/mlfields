@@ -40,9 +40,10 @@
             {className: 'dt-right'},
             {className: 'dt-right'},
             {% for metric in metrics %}
-            {className: 'dt-right'},
+            {className: 'dt-right', type: 'num'},
             {% endfor %}
         ],
+        pageLength: 100
       });
     });
   </script>

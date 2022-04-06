@@ -48,7 +48,9 @@ def get_metric_func():
             script="""\
 def get_metric_func():
     from scipy.stats import pearsonr
+    from sklearn.impute import SimpleImputer
     def func(feature_vec, target_vec):
+        feature_vec = SimpleImputer().fit_transform(feature_vec.reshape(-1, 1)).reshape(-1,)
         corr, _ = pearsonr(feature_vec, target_vec)
         return corr
     return func
@@ -59,8 +61,10 @@ def get_metric_func():
             script="""\
 def get_metric_func():
     from sklearn.feature_selection import mutual_info_regression
+    from sklearn.impute import SimpleImputer
     def func(feature_vec, target_vec):
-        mi = mutual_info_regression(feature_vec.reshape(-1, 1), target_vec)
+        feature_vec = SimpleImputer().fit_transform(feature_vec.reshape(-1, 1))
+        mi = mutual_info_regression(feature_vec, target_vec)
         return mi[0]
     return func
 """
@@ -70,8 +74,10 @@ def get_metric_func():
             script="""\
 def get_metric_func():
     from sklearn.feature_selection import mutual_info_classif
+    from sklearn.impute import SimpleImputer
     def func(feature_vec, target_vec):
-        mi = mutual_info_classif(feature_vec.reshape(-1, 1), target_vec)
+        feature_vec = SimpleImputer().fit_transform(feature_vec.reshape(-1, 1))
+        mi = mutual_info_classif(feature_vec, target_vec)
         return mi[0]
     return func
 """

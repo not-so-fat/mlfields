@@ -10,7 +10,7 @@ db = SQLAlchemy()
 class Projects(db.Model):
     __tablename__ = "projects"
     project_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer, unique=True, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
     note = db.Column(db.String)
     created = db.Column(db.DateTime, nullable=False, default=sqlalchemy.sql.func.now())
 

@@ -1,11 +1,12 @@
 import requests
 import numpy
+from pandas.api import types
 
 
 class MLFieldSession(object):
-    def __init__(self, host):
+    def __init__(self, host, port=5000):
         self.session = requests.Session()
-        self.url_header = f"http://{host}:5000/api"
+        self.url_header = f"http://{host}:{port}/api"
         self.project_id = None
 
     def set_project(self, name, note=""):
@@ -60,15 +61,26 @@ class MLFieldSession(object):
         }
 
     @_check_project
-    def register_feature_matrix(self, df, target_column, name, note="", feature_columns=[], feature_names_dict={}):
+    def register_feature_matrix(
+        self, df, target_column, name, note="", feature_columns=[], feature_names_dict={}
+    ):
         feature_columns = feature_columns or [c for c in df.columns if c != target_column]
         feature_ids = self._get_or_create_feature_ids(df[feature_columns], feature_names_dict)
         fm_id = self.get_or_create_fm(name, note)
         metric_func = self.get_metric_func()
+        target_vec = df[target_column].values
         for cname, fid in feature_ids.items():
+            feature_vec = df[cname].astype(float).values
             for mid, mfunc in metric_func.items():
-                v = mfunc(df[cname].astype(float).values, df[target_column].values)
-                self.post_evaluation(fm_id, fid, mid, v)
+                self._get_or_update_evaluation(feature_vec, target_vec, mfunc, fm_id, fid, mid)
+                
+    def _get_or_update_evaluation(self, feature_vec, target_vec, mfunc, fm_id, fid, mid):
+        #TODO: skip if value was already registered for this combination
+        v = mfunc(feature_vec, target_vec)
+        if not numpy.isnan(v):
+            if types.is_int64_dtype(v):
+                v = int(v)
+            self.post_evaluation(fm_id, fid, mid, v)
                 
     @_check_project
     def get_or_create_fm(self, name, note):
@@ -121,7 +133,7 @@ class MLFieldSession(object):
         vec2 = numpy.array([0, 1, 0, 1, 1])
         try:
             func(vec1, vec2)
-        except e:
+        except Exception as e:
             raise(e)
     
     @staticmethod
