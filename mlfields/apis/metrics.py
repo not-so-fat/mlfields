@@ -14,10 +14,9 @@ parser.add_argument('script')
 
 
 class Metrics(Resource):
-    def post(self, project_id):
+    def post(self):
         args = parser.parse_args()
         new_metric = EvaluationMetrics(
-            project_id=project_id,
             metric_name=args["name"],
             script=args["script"]
         )
@@ -25,8 +24,8 @@ class Metrics(Resource):
         db.session.commit()
         return {"metric_id": new_metric.metric_id}, 201
 
-    def get(self, project_id):
-        metrics = EvaluationMetrics.query.filter_by(project_id=project_id)
+    def get(self):
+        metrics = EvaluationMetrics.query
         return [
             dict(
                 metric_id = metric.metric_id,

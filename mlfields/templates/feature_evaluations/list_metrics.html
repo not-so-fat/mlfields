@@ -13,6 +13,7 @@
     <tr>
       <th>Metric ID</th>
       <th>Name</th>
+      <th>In Use</th>
       <th>Script</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
       <tr>
         <td>{{ row["metric_id"] }}</td>
         <td>{{ row["metric_name"] }}</td>
+        <td>{{ row["In Use"] }} <a href="{{ row["url"] }}"> Change </a></td>
         <td><pre>{{ row["script"] }}</pre></td>
       </tr>
   {% endfor %}
@@ -33,6 +35,7 @@
     $(document).ready(function () {
       $('#evaluation_metrics').DataTable({
         columns: [
+            {className: 'dt-right'},
             {className: 'dt-right'},
             {className: 'dt-right'},
             {className: 'dt-left'}

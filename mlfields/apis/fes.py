@@ -17,6 +17,14 @@ parser.add_argument('value')
 class FEs(Resource):
     def post(self, project_id, fm_id):
         args = parser.parse_args()
+        existing_fe = FeatureEvaluations.query.filter_by(
+            fm_id=fm_id,
+            feature_id=args["feature_id"],
+            metric_id=args["metric_id"]
+        ).first()
+        if existing_fe:
+            db.session.delete(existing_fe)
+            db.session.commit()
         new_fe = FeatureEvaluations(
             fm_id=fm_id,
             feature_id=args["feature_id"],
@@ -26,3 +34,15 @@ class FEs(Resource):
         db.session.add(new_fe)
         db.session.commit()
         return {}, 201
+
+    def get(self, project_id, fm_id):
+        fes = FeatureEvaluations.query.filter_by(project_id=project_id, fm_id=fm_id)
+        return [
+            dict(
+                fm_id=fe.fm_id,
+                feature_id=fe.feature_id,
+                metric_id=fe.metric_id,
+                value=fe.value
+            )
+            for fe in fes
+        ]

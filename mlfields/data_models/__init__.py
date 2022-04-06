@@ -33,11 +33,12 @@ class FeatureMatrices(db.Model):
     note = db.Column(db.String)
 
 
-class FeatureListInFM(db.Model):
-    __tablename__ = "feature_list_in_fm"
+class MetricsInUse(db.Model):
+    __tablename__ = "metrics_in_use_project"
     row_id = db.Column(db.Integer, primary_key=True)
-    fm_id = db.Column(db.Integer, db.ForeignKey("feature_matrices.fm_id"), nullable=False)
-    feature_id = db.Column(db.Integer, db.ForeignKey("feature_definitions.feature_id"), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.project_id"), nullable=False)
+    metric_id = db.Column(db.Integer, db.ForeignKey("evaluation_metrics.metric_id"), nullable=False)
+    __table_args__ = (db.UniqueConstraint("project_id", "metric_id", name="_project_id_metric_id_uc"),)
 
 
 class FeatureEvaluations(db.Model):
@@ -52,7 +53,5 @@ class FeatureEvaluations(db.Model):
 class EvaluationMetrics(db.Model):
     __tablename__ = "evaluation_metrics"
     metric_id = db.Column(db.Integer, primary_key=True)
-    project_id = db.Column(db.Integer, db.ForeignKey("projects.project_id"), nullable=False)
-    metric_name = db.Column(db.String, nullable=False)
+    metric_name = db.Column(db.String, unique=True, nullable=False)
     script = db.Column(db.String)
-    __table_args__ = (db.UniqueConstraint("project_id", "metric_name", name="_project_id_metric_name_uc"),)

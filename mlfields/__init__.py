@@ -9,6 +9,8 @@ from flask import (
 from flask.cli import with_appcontext
 from flask_restful import Api
 
+from mlfields.utils import initial_metrics
+
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -46,6 +48,9 @@ def create_app(test_config=None):
     from . import evaluation_metrics
     app.register_blueprint(evaluation_metrics.bp, url_prefix='/projects/<int:project_id>/metrics/')
 
+    from . import enable_metrics 
+    app.register_blueprint(enable_metrics.bp, url_prefix='/projects/<int:project_id>/metrics/<metric_id>')
+
     from . import feature_evaluations
     app.register_blueprint(feature_evaluations.bp, url_prefix='/projects/<int:project_id>/fms/<int:fm_id>/')
 
@@ -57,14 +62,16 @@ def create_app(test_config=None):
         fds,
         fms,
         metrics,
+        metrics_in_use,
         fes
     )
     api = Api(app)
     api.add_resource(pjs.PJs, '/api/projects/')
     api.add_resource(fds.FDs, '/api/projects/<int:project_id>/fds/')
+    api.add_resource(metrics_in_use.MIUs, '/api/projects/<int:project_id>/mius/')
     api.add_resource(fms.FMs, '/api/projects/<int:project_id>/fms/')
-    api.add_resource(metrics.Metrics, '/api/projects/<int:project_id>/metrics/')
     api.add_resource(fes.FEs, '/api/projects/<int:project_id>/fms/<int:fm_id>/')
+    api.add_resource(metrics.Metrics, '/api/metrics/')
 
     return app
 
@@ -85,3 +92,4 @@ def init_db():
     db = data_models.db
     with current_app.app_context():
         db.create_all()
+    initial_metrics.insert_all(db)
